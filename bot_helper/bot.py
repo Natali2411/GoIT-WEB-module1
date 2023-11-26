@@ -5,16 +5,19 @@ from prompt_toolkit import prompt
 
 from bot_helper.address_book import AddressBook
 from bot_helper.birthday import Birthday
+from bot_helper.bot_base import BotBase
 from bot_helper.record import RecordAlreadyExistsException, Record
+from bot_helper.save_data.save_base import SaveBase
 from bot_helper.save_data.save_on_disk import SaveAddressBookOnDisk
 from bot_helper.utils.command_prompts import get_nested_completer
 from bot_helper.utils.format_str import FormatStr
 
 
-class Bot:
+class Bot(BotBase):
 
-    contacts = AddressBook(data_save_tool=SaveAddressBookOnDisk(
-        address="address_book.json"))
+    def __init__(self, data_save_tool: SaveBase):
+        super().__init__(data_save_tool)
+        self.contacts = AddressBook(data_save_tool=data_save_tool)
     
     @staticmethod
     def input_error(func: callable) -> callable:
@@ -42,15 +45,15 @@ class Bot:
     
     
     @input_error
-    def parse_cli_command(self, cli_input: str) -> Tuple[str, callable, List[str]]:
+    def parse_command(self, _input: str) -> Tuple[str, callable, List[str]]:
         """
         Method that parses the typed commands from CLI.
-        :param cli_input: String from CLI.
+        :param _input: String from CLI.
         :return: Function name, function object and function arguments.
         """
         for command_name, func in self.COMMANDS.items():
-            if cli_input.lower().startswith(command_name):
-                return command_name, func, cli_input[len(command_name):].strip().split()
+            if _input.lower().startswith(command_name):
+                return command_name, func, _input[len(command_name):].strip().split()
         return "unknown", self.COMMANDS["unknown"], []
     
     
@@ -479,13 +482,13 @@ def main() -> None:
     good bye).
     :return: None.
     """
-    bot = Bot()
+    bot = Bot(data_save_tool=SaveAddressBookOnDisk(address="address_book.json"))
     while True:
         cli_input = prompt(message="Type a command>>> ",
                            completer=get_nested_completer(),
                            bottom_toolbar="Run 'help' command for getting additional "
                                           "information about bot commands")
-        func_name, func, func_args = bot.parse_cli_command(cli_input)
+        func_name, func, func_args = bot.parse_command(cli_input)
         print(func(bot, *func_args))
         if func_name in ("good bye", "close", "exit"):
             break
