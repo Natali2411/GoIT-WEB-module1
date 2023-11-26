@@ -40,7 +40,6 @@ def get_nested_completer() -> NestedCompleter:
             "phone": None,
             "email": None,
             "address": None,
-            "tags": None,
         },
         "search": {
             "contact": None,
