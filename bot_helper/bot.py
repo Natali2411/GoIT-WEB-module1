@@ -12,8 +12,7 @@ from bot_helper.utils.format_str import FormatStr
 
 
 class Bot:
-    
-    records = dict()
+
     contacts = AddressBook(data_save_tool=SaveAddressBookOnDisk(
         address="address_book.json"))
     
@@ -52,7 +51,7 @@ class Bot:
         for command_name, func in self.COMMANDS.items():
             if cli_input.lower().startswith(command_name):
                 return command_name, func, cli_input[len(command_name):].strip().split()
-        return "unknown", self.unknown, []
+        return "unknown", self.COMMANDS["unknown"], []
     
     
     @input_error
@@ -168,8 +167,8 @@ class Bot:
         record_num = None
         if args:
             record_num = int(args[0])
-        self.records = self.contacts.iterator(record_num)
-        return FormatStr.show_address_book(self.records)
+        records = self.contacts.iterator(record_num)
+        return FormatStr.show_address_book(records)
     
     
     def search_contact(self, *args) -> str:
@@ -182,9 +181,9 @@ class Bot:
         search_phrase = args[0].strip()
         if len(search_phrase) < 2:
             raise ValueError("Searched phrase must have at least 2 symbols")
-        self.records = self.contacts.search_contact(search_phrase=search_phrase)
+        records = self.contacts.search_contact(search_phrase=search_phrase)
         rec = []
-        for dic in [i for i in self.records]:
+        for dic in [i for i in records]:
             rec += [(dic["name"], dic["info"])]
         return FormatStr.show_address_book([rec])
     
@@ -469,6 +468,7 @@ class Bot:
         "change email": change_email,
         "change address": change_address,
         "change name": change_name,
+        "unknown": unknown,
     }
 
 
