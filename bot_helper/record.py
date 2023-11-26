@@ -18,13 +18,6 @@ class RecordAlreadyExistsException(Exception):
     pass
 
 
-class RecordWasNotFoundException(Exception):
-    """
-    Record was not found during operation.
-    """
-    pass
-
-
 class Record:
     """
     This class describes the logic of storing data about the client and all his/her
@@ -33,12 +26,12 @@ class Record:
 
     def __init__(self, name: str, birthday: str = None):
         self.name = Name(name)
-        self.phones = []
+        self.phones: list[Phone] = []
         self.birthday = Birthday(birthday)
         self.address = Address([])
-        self.emails = []
+        self.emails: list[Email] = []
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Contact name: {self.name.value}, phones:" \
                f" {'; '.join(p.value for p in self.phones)}, address:" \
                f" {self.address}, emails:" \
@@ -98,15 +91,15 @@ class Record:
                 return phone, idx
         return None, None
  
-    def get_email_by_number(self, email_num: str) -> Tuple[Any, int] | Tuple[None, None]:
+    def get_email_by_number(self, email_val: str) -> Tuple[Any, int] | Tuple[None, None]:
         """
         Method iterates through the list of email objects and returns the object that
-        has 'email_num' as an email value.
-        :param email_num: Email number string.
+        has 'email_val' as an email value.
+        :param email_val: Email value string.
         :return: Email object and it's index in the list.
         """
         for idx, email in enumerate(self.emails):
-            if email.value == email_num:
+            if email.value == email_val:
                 return email, idx
         return None, None
 
@@ -143,7 +136,7 @@ class Record:
         :param new_email: The new email number.
         :return: None.
         """
-        found_email, idx = self.get_email_by_number(email_num=old_email)
+        found_email, idx = self.get_email_by_number(email_val=old_email)
         if found_email:
             self.emails[idx].value = new_email
         else:
@@ -179,7 +172,7 @@ class Record:
         return f"Birthday '{birthday}' was successfully added to the birthday '" \
                f"{self.name.value}'"
 
-    def add_address(self, address: list):
+    def add_address(self, address: list) -> str:
         """
         Method adds Address instance to the field 'address' for the particular client.
         :param address: country, city, street, house, apartment.
@@ -189,7 +182,7 @@ class Record:
         return f"Address '{address}' was successfully added to the address '" \
                f"{self.name.value}'"
 
-    def add_email(self, email: str):
+    def add_email(self, email: str) -> str:
         """
         Method adds Email instances into the list of emails for a particular client.
         :param email: Email address as a string.

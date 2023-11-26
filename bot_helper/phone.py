@@ -24,7 +24,7 @@ class Phone(Field):
         return self.__value
 
     @value.setter
-    def value(self, phone: str):
+    def value(self, phone: str) -> None:
         match: Match[bytes] | None = re.search('\d+', phone)
         numbers = match.group() if match else ""
         phone_number_len: int = len(phone)

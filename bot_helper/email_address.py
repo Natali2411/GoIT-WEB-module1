@@ -19,14 +19,17 @@ class Email(Field):
         return self.__value
 
     @value.setter
-    def value(self, email: str):
+    def value(self, email: str) -> None:
         match = re.search(r"[A-Za-z]+[\w\.]+@\w+\.[a-zA-Z]{1,}[^\.-]", email)
         email_address = match.group() if match else "" 
         if len(email) != len(email_address):
             raise ValueError("The address must contain exactly one @ symbol."\
-                            "The address must include the characters A-Za-z0-9 before and after the @ symbol."\
-                            "The local name can contain the characters a-zA-z0-9 and the characters: ! #$%&'r; + - . = ? ^^ _ ` { } ½ ~."\
-                            "The following characters cannot be used: < > ( ) [ ] @ , ; : \ /  * or space."\
-                            "The domain name must contain two text lines separated by a dot."\
-                            "The last character cannot be a minus sign, a hyphen, or a dot.")
+                            "The address must include the characters A-Za-z0-9 before "
+                             "and after the @ symbol. The local name can contain the "
+                             "characters a-zA-z0-9 and the characters: "
+                             "! #$%&'r; + - . = ? ^^ _ ` { } ½ ~. The following "
+                             "characters cannot be used: < > ( ) [ ] @ , ; : \ /  * or "
+                             "space. The domain name must contain two text lines "
+                             "separated by a dot. The last character cannot be a minus"
+                             " sign, a hyphen, or a dot.")
         self.__value = email

@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Any
 
 
 class SaveBase(ABC):
@@ -10,9 +11,9 @@ class SaveBase(ABC):
         self.address = address
 
     @abstractmethod
-    def save_info(self, path: str, data: dict):
+    def save_info(self, path: str, data: dict) -> None:
         ...
 
     @abstractmethod
-    def read_info(self, path: str):
+    def read_info(self, path: str) -> Any:
         ...

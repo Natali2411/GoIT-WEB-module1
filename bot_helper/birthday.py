@@ -49,4 +49,5 @@ class Birthday(Field):
         """
         if not isinstance(self.value, date):
             raise TypeError("The birthday value must be a datetime.date object")
-        return datetime.combine(date(datetime.now().year, self.value.month, self.value.day), time.min)
+        return datetime.combine(date(datetime.now().year, self.value.month,
+                                     self.value.day), time.min)

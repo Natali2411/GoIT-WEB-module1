@@ -1,3 +1,5 @@
+from typing import Dict
+
 from bot_helper.field import Field
 
 ADDRESS_KEY_LIST = ["country", "city", "street", "house", "apartment"]
@@ -31,7 +33,7 @@ class Address(Field):
         return (f'country: {self.country}, city: {self.city}, street: {self.street}, '
                 f'house: {self.house}, apartment: {self.apartment}')
 
-    def get_addr_dict(self) -> dict:
+    def get_addr_dict(self) -> Dict[str, str]:
         """
         Method returns the address in as the dictionary.
         :return: Address as a dictionary.

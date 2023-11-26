@@ -1,7 +1,7 @@
 import json
 import pathlib
 
-from bot_helper.bot_helper1.save_data.save_base import SaveBase
+from bot_helper.save_data.save_base import SaveBase
 
 
 class SaveAddressBookOnDisk(SaveBase):

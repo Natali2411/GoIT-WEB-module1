@@ -9,5 +9,5 @@ class Field:
     def __init__(self, value: Any):
         self.__value = value
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.__value)
